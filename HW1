@@ -1,0 +1,17 @@
+#!/bin/bash
+input_dir=$1
+output_dir=$2
+find $input_dir -type f | while read file; do
+    filename=$(basename $file)
+    if [ -f $output_dir/$filename ]; then
+        extension="${filename##*.}"
+        filename="${filename%.*}"
+        i=1
+        while [ -f $output_dir/$filename-$i.$extension ]; do
+            ((i++))
+        done
+        cp $file $output_dir/${filename}-$i.$extension
+    else
+        cp $file $output_dir/$filename
+    fi
+done
